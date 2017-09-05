@@ -1,32 +1,37 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
-import router from './router'
+import App from './App.vue'
+import VueRouter from 'vue-router'
+// import VueResource from 'vue-resource'
+// 开启debug模式
+Vue.config.debug = true
 
-// ElementUI
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-Vue.use(ElementUI)
+Vue.use(VueRouter)
+// Vue.use(VueResource)
 
-// font-awesome
-import 'font-awesome/css/font-awesome.min.css'
+// 定义组件, 也可以像教程之前教的方法从别的文件引入
+const First = { template: '<div><h2>我是第 1 个子页面</h2></div>' }
+import secondcomponent from './components/secondcomponent.vue'
 
-// vuex
-import store from './store/index.js'
-
-// axios
-import axios from 'axios'
-
-// 设置为 false 以阻止 vue 在启动时生成生产提示
-Vue.config.productionTip = false
-
-/* eslint-disable */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  axios,
-  template: '<App/>',
-  components: { App }
+// 创建一个路由器实例
+// 并且配置路由规则
+const router = new VueRouter({
+  mode: 'history',
+  base: __dirname,
+  routes: [
+    {
+      path: '/first',
+      component: First
+    },
+    {
+      path: '/second',
+      component: secondcomponent
+    }
+  ]
 })
+
+// 现在我们可以启动应用了！
+// 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
+new Vue({
+  router, // router: router,
+  render: h => h(App)
+}).$mount('#app')
